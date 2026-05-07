@@ -26,9 +26,11 @@ const smartReplies = ["Sounds good, let's review Friday.", "Can we push to next 
 
 export function EmailView({ email }: { email: Email | null }) {
   const [smartReplyOpen, setSmartReplyOpen] = useState(false);
+  const [replyMode, setReplyMode] = useState<"smart" | "manual" | null>(null);
 
   useEffect(() => {
     setSmartReplyOpen(false);
+    setReplyMode(null);
   }, [email?.id]);
 
   return (
@@ -63,8 +65,54 @@ export function EmailView({ email }: { email: Email | null }) {
               <SenderIdentity email={email} compact />
 
               <div className="flex min-w-0 items-center justify-center gap-1">
+                <div className="relative">
+                  <motion.button
+                    key="reply"
+                    whileTap={{ scale: 0.96 }}
+                    whileHover={{ y: -1 }}
+                    onClick={() => setReplyMode(replyMode === null ? "smart" : null)}
+                    className={cn(
+                      "flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-xs transition",
+                      replyMode ? "bg-white/[0.08] text-foreground" : "text-muted-foreground hover:bg-white/[0.06] hover:text-foreground"
+                    )}
+                  >
+                    <Reply className="h-3.5 w-3.5" /> <span className="hidden sm:inline">Reply</span>
+                  </motion.button>
+                  <AnimatePresence>
+                    {replyMode && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute top-full z-40 mt-2 w-40 rounded-md border border-white/[0.12] bg-[oklch(0.15_0.005_270_/_0.88)] p-1.5 shadow-[0_12px_40px_-12px_rgba(0,0,0,0.9)] backdrop-blur-xl"
+                      >
+                        <motion.button
+                          whileHover={{ x: 2 }}
+                          whileTap={{ scale: 0.98 }}
+                          onClick={() => setSmartReplyOpen(true)}
+                          className="w-full rounded-sm px-3 py-2 text-left text-xs text-foreground/90 transition hover:bg-white/[0.06]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Sparkles className="h-3 w-3" />
+                            <span>Smart reply</span>
+                          </div>
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ x: 2 }}
+                          whileTap={{ scale: 0.98 }}
+                          className="w-full rounded-sm px-3 py-2 text-left text-xs text-foreground/90 transition hover:bg-white/[0.06]"
+                        >
+                          <div className="flex items-center gap-2">
+                            <Reply className="h-3 w-3" />
+                            <span>Manual reply</span>
+                          </div>
+                        </motion.button>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
                 {[
-                  { icon: Reply, label: "Reply" },
                   { icon: ReplyAll, label: "Reply all" },
                   { icon: Forward, label: "Forward" },
                 ].map(({ icon: Icon, label }) => (
