@@ -69,7 +69,7 @@ function MailApp() {
 
   // Gate: show onboarding only after localStorage has been read (hydrated) and only
   // when it has not been completed in a previous session.
-  const showOnboarding = hydrated && !preferences.onboardingCompleted;
+  const showOnboarding = false; // Temporarily bypassed for testing
 
   /**
    * Called by OnboardingModal once all 7 steps are complete.
