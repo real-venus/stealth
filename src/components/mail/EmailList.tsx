@@ -40,6 +40,7 @@ export function EmailList({
   onArchive,
   onStar,
   onSnooze,
+  onMove,
 }: {
   emails: Email[];
   selectedId: string | null;
