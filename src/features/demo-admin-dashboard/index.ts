@@ -244,3 +244,14 @@ export { DATASET_EXPORT_SCHEMA_VERSION } from "./types/datasetExport";
 export type { DraftDatasetExport } from "./types/datasetExport";
 export { ExportDatasetButton } from "./components/ExportDatasetButton";
 export type { ExportDatasetButtonProps } from "./components/ExportDatasetButton";
+
+// Read receipt state controls (issue #182): states, option copy, and field component.
+export type { ReceiptState, ReceiptStateOption } from "./constants/receiptStates";
+export {
+  RECEIPT_STATES,
+  RECEIPT_STATE_OPTIONS,
+  DEFAULT_RECEIPT_STATE,
+  getReceiptStateOption,
+} from "./constants/receiptStates";
+export { ReceiptStateField } from "./components/ReceiptStateField";
+export type { ReceiptStateFieldProps } from "./components/ReceiptStateField";
