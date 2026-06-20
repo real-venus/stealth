@@ -7,6 +7,7 @@ routing, inbox architecture, wallet core, Stellar integration, or design system.
 ## What To Review
 
 ### Service logic (`services/security-flagging.service.mjs`)
+
 - Input sanitizers strip control characters before any comparison, preventing injection of
   raw CR/LF/NUL bytes from reaching downstream logic.
 - Validators enforce closed enumerations for `severity`, `category`, and `status`. Any
@@ -21,6 +22,7 @@ routing, inbox architecture, wallet core, Stellar integration, or design system.
   statuses (`resolved`, `dismissed`) block all further changes.
 
 ### Fixtures (`fixtures/security-flag-cases.json`)
+
 - Covers six email signal scenarios including phishing, malware, social engineering,
   credential theft, data breach, and a benign newsletter as the low-risk baseline.
 - Twelve hostile inputs cover: missing local part, missing domain, empty string, path
@@ -31,6 +33,7 @@ routing, inbox architecture, wallet core, Stellar integration, or design system.
   exit attempts) are fixture-driven.
 
 ### Tests (`tests/security-flagging.test.mjs`)
+
 - 50 tests; 0 external dependencies; runs with `node --test` (Node 18+).
 - Inline direct tests cover sanitizers, individual validators, classifier categories, and
   severity comparison utilities.

@@ -99,10 +99,7 @@ export function validateEmail(value) {
     throw new SecurityFlagError("email contains illegal characters", "email");
   }
   if (value.length > LIMITS.MAX_EMAIL_LENGTH) {
-    throw new SecurityFlagError(
-      `email exceeds ${LIMITS.MAX_EMAIL_LENGTH} characters`,
-      "email",
-    );
+    throw new SecurityFlagError(`email exceeds ${LIMITS.MAX_EMAIL_LENGTH} characters`, "email");
   }
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value)) {
     throw new SecurityFlagError("email format is invalid", "email");
@@ -244,12 +241,7 @@ const SIGNAL_MAP = {
     "account compromised",
     "security incident",
   ],
-  "suspicious-sender": [
-    "noreply@",
-    "do-not-reply@",
-    "mailer-daemon",
-    "postmaster@",
-  ],
+  "suspicious-sender": ["noreply@", "do-not-reply@", "mailer-daemon", "postmaster@"],
 };
 
 function matchSignals(text, signals) {
@@ -322,10 +314,7 @@ export function validateStatusTransition(from, to) {
   validateStatus(from);
   validateStatus(to);
   if (!canTransition(from, to)) {
-    throw new SecurityFlagError(
-      `Cannot transition from "${from}" to "${to}"`,
-      "status",
-    );
+    throw new SecurityFlagError(`Cannot transition from "${from}" to "${to}"`, "status");
   }
   return true;
 }

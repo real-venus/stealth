@@ -121,10 +121,7 @@ test("validateEmail throws for CRLF injection", () => {
     () => validateEmail("user@evil.test\r\nBcc: victim@example.test"),
     SecurityFlagError,
   );
-  assert.throws(
-    () => validateEmail("user@evil.test\nX-Injected: yes"),
-    SecurityFlagError,
-  );
+  assert.throws(() => validateEmail("user@evil.test\nX-Injected: yes"), SecurityFlagError);
 });
 
 test("validateEmail throws for null byte", () => {
@@ -161,10 +158,7 @@ test("validateThreadId throws for path traversal", () => {
 });
 
 test("validateThreadId throws for XSS payload", () => {
-  assert.throws(
-    () => validateThreadId("<script>alert(1)</script>"),
-    SecurityFlagError,
-  );
+  assert.throws(() => validateThreadId("<script>alert(1)</script>"), SecurityFlagError);
 });
 
 test("validateThreadId throws for spaces", () => {
@@ -276,8 +270,7 @@ test("classifyEmail detects phishing signals", () => {
     subject: "Urgent: Verify your account to avoid suspension",
     senderEmail: "support@fake-verify.example.net",
     snippet: "Your account has been flagged for unusual sign-in activity.",
-    bodyPreview:
-      "Click here to confirm your credentials. This is urgent action required. Act now.",
+    bodyPreview: "Click here to confirm your credentials. This is urgent action required. Act now.",
   });
   assert.equal(result.category, "phishing");
   assert.ok(["critical", "high"].includes(result.severity));

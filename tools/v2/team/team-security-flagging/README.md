@@ -71,13 +71,13 @@ Expected output: **50 tests, 0 failures**.
 
 A flag marks an email thread as a security incident. Key fields:
 
-| Field | Type | Notes |
-|---|---|---|
-| `severity` | `critical \| high \| medium \| low` | Set by reporter or auto-classifier |
-| `category` | `phishing \| credential-theft \| malware \| data-breach \| suspicious-sender \| unauthorized-access \| social-engineering \| other` | Nature of threat |
-| `status` | `new \| under-review \| escalated \| resolved \| dismissed` | Lifecycle state |
-| `evidence` | `string[]` | Up to 10 items, 500 chars each |
-| `description` | `string` | Up to 2000 chars |
+| Field         | Type                                                                                                                                | Notes                              |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| `severity`    | `critical \| high \| medium \| low`                                                                                                 | Set by reporter or auto-classifier |
+| `category`    | `phishing \| credential-theft \| malware \| data-breach \| suspicious-sender \| unauthorized-access \| social-engineering \| other` | Nature of threat                   |
+| `status`      | `new \| under-review \| escalated \| resolved \| dismissed`                                                                         | Lifecycle state                    |
+| `evidence`    | `string[]`                                                                                                                          | Up to 10 items, 500 chars each     |
+| `description` | `string`                                                                                                                            | Up to 2000 chars                   |
 
 ### Auto-Classification
 
@@ -137,7 +137,7 @@ try {
 
 // Guard a status change
 validateStatusTransition("new", "under-review"); // ok
-validateStatusTransition("resolved", "new");      // throws SecurityFlagError
+validateStatusTransition("resolved", "new"); // throws SecurityFlagError
 ```
 
 ---

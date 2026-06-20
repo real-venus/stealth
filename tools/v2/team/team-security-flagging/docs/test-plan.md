@@ -21,12 +21,12 @@ fixtures/security-flag-cases.json
 
 The fixture contains four top-level keys:
 
-| Key | Purpose |
-|---|---|
-| `emailSignals` | Six email scenarios with expected classification output |
-| `validFlags` | Three well-formed flag creation inputs that must pass validation |
-| `hostileInputs` | Twelve rejection cases covering injection and enum misuse |
-| `statusTransitions` | Seven valid and six blocked status transitions |
+| Key                 | Purpose                                                          |
+| ------------------- | ---------------------------------------------------------------- |
+| `emailSignals`      | Six email scenarios with expected classification output          |
+| `validFlags`        | Three well-formed flag creation inputs that must pass validation |
+| `hostileInputs`     | Twelve rejection cases covering injection and enum misuse        |
+| `statusTransitions` | Seven valid and six blocked status transitions                   |
 
 ---
 
@@ -34,29 +34,30 @@ The fixture contains four top-level keys:
 
 ### Classification (`classifyEmail`)
 
-| Fixture ID | Email type | Expected severity | Expected category |
-|---|---|---|---|
-| `phishing-credential-harvest` | Credential phishing with suspension threat | `critical` | `phishing` |
-| `malware-invoice-attachment` | Invoice with macro attachment | `critical` | `malware` |
-| `social-engineering-wire-transfer` | BEC wire-transfer request | `critical` | `social-engineering` |
-| `credential-reset-otp` | Multi-signal credential-theft attempt | `critical` | `credential-theft` |
-| `data-breach-notification` | Breach notification with multiple signals | `critical` | `data-breach` |
-| `low-risk-newsletter` | Product digest with no threat signals | `low` | `other` |
+| Fixture ID                         | Email type                                 | Expected severity | Expected category    |
+| ---------------------------------- | ------------------------------------------ | ----------------- | -------------------- |
+| `phishing-credential-harvest`      | Credential phishing with suspension threat | `critical`        | `phishing`           |
+| `malware-invoice-attachment`       | Invoice with macro attachment              | `critical`        | `malware`            |
+| `social-engineering-wire-transfer` | BEC wire-transfer request                  | `critical`        | `social-engineering` |
+| `credential-reset-otp`             | Multi-signal credential-theft attempt      | `critical`        | `credential-theft`   |
+| `data-breach-notification`         | Breach notification with multiple signals  | `critical`        | `data-breach`        |
+| `low-risk-newsletter`              | Product digest with no threat signals      | `low`             | `other`              |
 
 Confidence is asserted separately — all threat scenarios expect `"high"`, the benign
 newsletter expects `"low"`.
 
 ### Input Validation (`validateCreateFlagInput`)
 
-| Fixture ID | Checks |
-|---|---|
-| `flag-001` | Phishing flag; all required fields valid |
+| Fixture ID | Checks                                      |
+| ---------- | ------------------------------------------- |
+| `flag-001` | Phishing flag; all required fields valid    |
 | `flag-002` | Malware flag; evidence array with two items |
-| `flag-003` | Social-engineering flag; critical severity |
+| `flag-003` | Social-engineering flag; critical severity  |
 
 ### Status Transitions (`canTransition` + `validateStatusTransition`)
 
 **Valid paths:**
+
 - `new → under-review`
 - `new → dismissed`
 - `under-review → escalated`
@@ -66,6 +67,7 @@ newsletter expects `"low"`.
 - `escalated → dismissed`
 
 **Blocked paths (must throw `SecurityFlagError`):**
+
 - `new → escalated` (cannot skip `under-review`)
 - `new → resolved` (cannot skip `under-review`)
 - `resolved → *` (terminal)
@@ -75,20 +77,20 @@ newsletter expects `"low"`.
 
 ## Negative / Injection Checks
 
-| Field | Hostile value | Reason blocked |
-|---|---|---|
-| `email` | `@missinglocal.test` | Missing local part |
-| `email` | `nodomain` | Missing `@` sign |
-| `email` | `""` | Empty string |
-| `email` | `user@` | Missing domain |
-| `threadId` | `../../../etc/passwd` | Path traversal |
-| `threadId` | `<script>alert(1)</script>` | XSS payload |
-| `threadId` | `thread 001` | Space in ID |
-| `severity` | `CRITICAL` | Wrong case |
-| `severity` | `extreme` | Unknown value |
-| `category` | `hacking` | Unknown value |
-| `status` | `pending` | Unknown value |
-| `status` | `RESOLVED` | Wrong case |
+| Field      | Hostile value               | Reason blocked     |
+| ---------- | --------------------------- | ------------------ |
+| `email`    | `@missinglocal.test`        | Missing local part |
+| `email`    | `nodomain`                  | Missing `@` sign   |
+| `email`    | `""`                        | Empty string       |
+| `email`    | `user@`                     | Missing domain     |
+| `threadId` | `../../../etc/passwd`       | Path traversal     |
+| `threadId` | `<script>alert(1)</script>` | XSS payload        |
+| `threadId` | `thread 001`                | Space in ID        |
+| `severity` | `CRITICAL`                  | Wrong case         |
+| `severity` | `extreme`                   | Unknown value      |
+| `category` | `hacking`                   | Unknown value      |
+| `status`   | `pending`                   | Unknown value      |
+| `status`   | `RESOLVED`                  | Wrong case         |
 
 CRLF injection (`\r\n` in an email header field) and null-byte injection are tested
 directly in the test file with inline strings because those characters cannot appear in
@@ -98,24 +100,24 @@ JSON string literals.
 
 ## Sanitizer Checks
 
-| Input | Expected output |
-|---|---|
-| `"  hello  "` | `"hello"` (trimmed) |
-| `"hello\x00world"` | `"helloworld"` (NUL stripped) |
-| `"line\x1Fbreak"` | `"linebreak"` (control char stripped) |
-| `null`, `42`, `{}` | `null` (non-string → null) |
+| Input              | Expected output                       |
+| ------------------ | ------------------------------------- |
+| `"  hello  "`      | `"hello"` (trimmed)                   |
+| `"hello\x00world"` | `"helloworld"` (NUL stripped)         |
+| `"line\x1Fbreak"`  | `"linebreak"` (control char stripped) |
+| `null`, `42`, `{}` | `null` (non-string → null)            |
 
 ---
 
 ## Severity Comparison
 
-| Assertion | Expected |
-|---|---|
-| `isMoreSevere("critical", "high")` | `true` |
-| `isMoreSevere("low", "high")` | `false` |
-| `maxSeverity("high", "critical")` | `"critical"` |
-| `maxSeverity("low", "high")` | `"high"` |
-| `maxSeverity("medium", "medium")` | `"medium"` |
+| Assertion                          | Expected     |
+| ---------------------------------- | ------------ |
+| `isMoreSevere("critical", "high")` | `true`       |
+| `isMoreSevere("low", "high")`      | `false`      |
+| `maxSeverity("high", "critical")`  | `"critical"` |
+| `maxSeverity("low", "high")`       | `"high"`     |
+| `maxSeverity("medium", "medium")`  | `"medium"`   |
 
 ---
 

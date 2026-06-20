@@ -10,12 +10,7 @@ export type SecurityFlagCategory =
   | "social-engineering"
   | "other";
 
-export type SecurityFlagStatus =
-  | "new"
-  | "under-review"
-  | "escalated"
-  | "resolved"
-  | "dismissed";
+export type SecurityFlagStatus = "new" | "under-review" | "escalated" | "resolved" | "dismissed";
 
 export type SecurityFlag = {
   id: string;
