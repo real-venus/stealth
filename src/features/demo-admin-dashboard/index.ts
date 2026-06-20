@@ -477,6 +477,23 @@ export { LabelManager } from "./labels/LabelManager";
 export { mapImportedDataset, parseDatasetImport } from "./helpers/datasetImport";
 export type { DatasetImportIssue, DatasetImportResult } from "./types/datasetImport";
 
+// Validation quick-fix framework (issue #221): one-click fixes for demo-data validation issues.
+export {
+  applyQuickFix,
+  createQuickFixRegistry,
+  defaultQuickFixRegistry,
+  quickFixKindForIssue,
+  toSafeRecipient,
+  SAFE_BODY,
+  SAFE_RECIPIENT,
+  SAFE_SUBJECT,
+} from "./helpers/quickFixRegistry";
+export type {
+  QuickFix,
+  QuickFixApplication,
+  QuickFixKind,
+  QuickFixRegistry,
+} from "./types/quickFix";
 // Scenario registry and loader (issue #216): load demo scenarios into draft state.
 export {
   createScenarioRegistry,
